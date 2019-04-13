@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hey Charts</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+  <script src="https://unpkg.com/papaparse@4.6.3/papaparse.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: rgb(28, 33, 37);
+      font-family: 'Nunito', sans-serif;
+      color: rgb(138, 156, 168)
+    }
+    table {
+      font-size: 110%;
+    }
+    td:nth-child(2) {
+      font-weight: bolder;
+    }
+    #resp-chart, #resp-hist {
+      background-color: rgb(20, 20, 20)
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Summary</h1>
+  <table class="resultsTable">
+    <tr><td>Duration: &nbsp; </td><td id="duration"></td></tr>
+    <tr><td>Throughput: &nbsp; </td><td id="rps"></td></tr>
+    <tr><td>Slowest Resp: &nbsp; </td><td id="slowest"></td></tr>
+    <tr><td>Fastest Resp: &nbsp; </td><td id="fastest"></td></tr>
+    <tr><td>Average Resp: &nbsp; </td><td id="avg"></td></tr>
+  </table>
+  <h1>Response Times over Time</h1>
+  <canvas id="resp-chart" height="120"></canvas>
+  <h1>Response Times Histogram</h1>
+  <canvas id="resp-hist" height="120"></canvas>
+
+<script>  
+var respData = [];
+var respChart;
+
+var histData = [];
+var histDataLabels = [];
+var histDataColors = [];
+var histChart;
+
+var histChartCfg = {
+  type: 'bar',
+  data: {
+    labels: histDataLabels,
+    datasets: [
+      {
+        label: '',
+        backgroundColor: histDataColors,
+        data: histData,
+        borderColor: 'rgba(0, 0, 0, 0.8)',
+        borderWidth: 3,
+        hoverBackgroundColor: 'rgba(50, 255, 22, 0.4)'
+      }
+    ]
+  },
+
+  options: {
+    responsive: true ,
+    legend: {
+      display: false
+    },
+    scales: {
+      xAxes: [{
+        ticks: { fontColor: '#bbb' },
+        scaleLabel: {
+          display: true,
+          labelString: "response time (seconds)"
+        }
+      }],
+      yAxes: [{
+        ticks: { fontColor: '#bbb' },
+        scaleLabel: {
+          display: true,
+          labelString: "count"
+        }
+      }]
+    }    
+  }
+}
+
+var respChartCfg = {
+  type: 'scatter',
+  data: {
+    datasets: [
+      {
+        label: '',
+        data: respData,
+        pointBorderWidth: 0,
+        pointHoverRadius: 10
+      }
+    ]
+  },
+
+  options: {
+    responsive: true,
+    scales: {
+      xAxes: [{
+        gridLines: { color: '#777' },
+        ticks: { fontColor: '#bbb' },
+        scaleLabel: {
+          display: true,
+          labelString: "time into test (seconds)"
+        }
+      }],
+      yAxes: [{
+        gridLines: { color: '#444' },
+        ticks: { fontColor: '#bbb' },
+        scaleLabel: {
+          display: true,
+          labelString: "response time (seconds)"
+        }
+      }],      
+    },
+    onResize: function(e) {
+      let ctx = document.getElementById('resp-chart').getContext('2d');
+      updateGradient(respChart, ctx)
+    }   
+  }
+}
+
+var maxValue = 0
+var maxOffset = 0
+var minValue = Number.MAX_SAFE_INTEGER
+var dataCount = 0
+var rawDataCount = 0
+var STEP = 1
+
+Papa.parse("test.csv", {
+  download: true,
+
+  step: function(row) {
+    let resp = parseFloat(row.data[0][0])
+    if(isNaN(resp)) return;
+    rawDataCount++
+    let offset = parseFloat(row.data[0][7])
+
+    if(row.meta.cursor % STEP === 0) {
+      if(resp < minValue) minValue = resp
+      if(resp > maxValue) maxValue = resp
+      if(offset > maxOffset) maxOffset = offset
+      
+      respData.push({ x: offset, y: resp })
+      dataCount++;
+    }
+  },
+
+  complete: function() {
+    var BIN_COUNT = 15
+
+    document.getElementById('slowest').innerHTML = `${maxValue} seconds`
+    document.getElementById('fastest').innerHTML = `${minValue} seconds`
+    document.getElementById('duration').innerHTML = `${Math.ceil(maxOffset)} seconds`
+    document.getElementById('rps').innerHTML = `${(rawDataCount/maxOffset).toFixed(4)} req/sec (${rawDataCount})`
+
+    let binWidth = ((maxValue + 1) - Math.max(0, (minValue - 1)) ) / BIN_COUNT 
+
+    for(b = 0; b < BIN_COUNT; b++) {
+      histData[b] = 0
+      histDataLabels[b] = `${(binWidth * (b+1)).toFixed(2)}s`;
+      histDataColors[b] = `rgb(${(b/BIN_COUNT)*255}, 30, 200)`
+    }
+
+    let total = 0
+    for(d of respData) {
+      total += parseFloat(d.y);
+      histData[ Math.floor(d.y / binWidth) ]++
+    }
+    
+    document.getElementById('avg').innerHTML = `${(total / dataCount).toFixed(4)} seconds`
+    
+    let ctx = document.getElementById('resp-chart').getContext('2d');
+    respChart = new Chart(ctx, respChartCfg);
+    let ctxH = document.getElementById('resp-hist').getContext('2d');
+    histChart = new Chart(ctxH, histChartCfg);
+
+    updateGradient(respChart, ctx);
+  }
+});
+
+function updateGradient(chart, ctx) {
+  let gradientStroke = ctx.createLinearGradient(0, 0, 0, respChart.height);
+  gradientStroke.addColorStop(0.0, "#eb1c1c");
+  gradientStroke.addColorStop(0.5, "#f0db1d");
+  gradientStroke.addColorStop(1.0, "#18e609");
+  chart.data.datasets[0].pointBackgroundColor = gradientStroke
+
+  chart.update();
+}
+</script>
+
+</body>
+</html>
