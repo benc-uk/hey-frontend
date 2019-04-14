@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Hey Charts</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+  <script src="https://unpkg.com/papaparse@4.6.3/papaparse.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="css/site.css">
+  <link rel="shortcut icon" href="img/icon.png" type="image/png">
+  <script src="js/generator.js"></script>
+</head>
+
+<body onload="refreshFiles()">
+  <div class="inline"> <button id="generate" onclick="clickGenerate()"><i class="fas fa-chart-line"></i> Generate</button> </div>
+  <div class="inline">
+    <select id="csvSelect" onChange="refresh()">
+      <option value="" disabled selected="selected"> -- Select File -- </option>
+    </select>
+  </div>
+  <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="15" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
+    
+  <div class="report">
+    <h1>Summary</h1>
+    <div class="grid-container">
+      <table class="resultsTable">
+        <tr><td class="label">Total: &nbsp; </td><td id="total" class="num"></td></tr>
+        <tr><td class="label">Rate: &nbsp; </td><td id="rate" class="num"></td></tr>
+        <tr><td class="label">Slowest Resp: &nbsp; </td><td id="slowest" class="num"></td></tr>
+        <tr><td class="label">Fastest Resp: &nbsp; </td><td id="fastest" class="num"></td></tr>
+        <tr><td class="label">Average Resp: &nbsp; </td><td id="avg" class="num"></td></tr>
+      </table>
+
+      <canvas id="timing-chart" height="160" width="300" style="justify-self: center;"></canvas>
+    </div>
+
+    <h1>Response Times over Time</h1>
+    <canvas id="resp-chart" height="120"></canvas>
+
+    <h1>Response Times Histogram</h1>
+    <canvas id="resp-hist" height="120"></canvas>
+  </div>
+
+  <script src="js/report.js"></script>
+</body>
+</html>
