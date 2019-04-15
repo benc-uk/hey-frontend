@@ -118,15 +118,13 @@ var histChart = new Chart(document.getElementById('resp-hist').getContext('2d'),
 // Main data reporting / refresh function
 //
 function refresh() {
-  console.log("REFRESH!");
-  
   document.querySelector("#thinResult").value = document.querySelector("#thinInput").value
   var dataThin = document.querySelector("#thinInput").value
   
   let csvName = document.querySelector('#csvSelect').value
   if(!csvName) return;
 
-  document.querySelector(".report").style.visibility = "visible"
+  document.querySelector("#report").style.visibility = "visible"
   
   // Reset data
   respChartCfg.data.datasets[0].data = []

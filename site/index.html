@@ -8,26 +8,41 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
   <script src="https://unpkg.com/papaparse@4.6.3/papaparse.min.js"></script>
-  
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
   <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 
   <link rel="stylesheet" href="css/site.css">
-  <link rel="shortcut icon" href="img/icon.png" type="image/png">
   <script src="js/generator.js"></script>
+  
+  <link rel="shortcut icon" href="img/icon.png" type="image/png">
 </head>
 
-<body onload="refreshFiles()">
-  <div class="inline"> <button id="generate" onclick="clickGenerate()"><i class="fas fa-chart-line"></i> Generate</button> </div>
+<body onload="refreshFiles(); checkStatus();">
+
+  <div class="inline"> <button id="generate" onclick="clickGenerate()" disabled><i class="fas fa-chart-line"></i> Generator</button> </div>
   <div class="inline">
     <select id="csvSelect" onChange="refresh()">
       <option value="" disabled selected="selected"> -- Select File -- </option>
     </select>
   </div>
-  <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="15" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
+  <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="50" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
     
-  <div class="report">
+  <div id="gen-section">
+    <h1>Run 'hey'</h1>
+    <div style="display:flex; align-items: center; ">
+      <h3 style="width:7pc">URL:</h3> <input type="text" id="gen-url" style="flex: 1">
+    </div>
+    <div style="display:flex; align-items: center; ">
+      <h3 style="width:7pc">Parameters:</h3> <input type="text" id="gen-params" style="flex: 1">
+    </div>
+    <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
+  </div>
+
+  <div id="report">
     <h1>Summary</h1>
     <div class="grid-container">
       <table class="resultsTable">
@@ -49,5 +64,6 @@
   </div>
 
   <script src="js/report.js"></script>
+  <div id="toast"><div id="img">Icon</div><div id="desc">A notification message..</div></div>
 </body>
 </html>

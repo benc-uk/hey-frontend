@@ -34,13 +34,15 @@ app.get('/api/files', function (req, res) {
   res.send(data);
 });
 
-var heyProcess
+var heyProcess = null;
+var heyExitCode = -1;
+var badData = false
 // API for running hey
 app.post('/api/run', function (req, res) {
-  if(heyProcess) { res.send({error:'Load generator already running'}); return; }
+  if(heyProcess) { res.status(400).send({msg:'Load generator already running'}); return; }
   
   let output = "";
-  let params = req.body.params;
+  let paramString = req.body.params;
   let url = req.body.url;
 
   var urlParsed;
@@ -48,43 +50,73 @@ app.post('/api/run', function (req, res) {
     const { URL } = require('url');
     urlParsed = new URL(url);
   } catch (error) {
-    res.status(400).send({error:'URL is invalid'});
+    res.status(400).send({msg:'URL is invalid'});
     return;
   }
 
-  var date = new Date().toISOString();
+  let date = new Date().toISOString();
   date = date.replace('T', ' ').replace(/\:/g, '.').substring(0, date.length-5)
-  heyProcess = child_process.exec(`bin/hey -o csv ${params} ${url} > "${dataDir}/${urlParsed.hostname} ${date}.csv"`);
-  console.log(`### Running: bin/hey -o csv ${params} ${url}`)
 
+  let paramArray = []
+  if(paramString.length > 0) paramArray.push(...paramString.split(" "))
+  paramArray.push(...['-o', 'csv'])
+  paramArray.push(url)
+  heyExitCode = -1
+  badData = false
+  
+  heyProcess = child_process.spawn('bin/hey', paramArray);
+  console.log(`### Running: bin/hey ${paramString} -o csv ${url}`)
+
+  var dataBlock = 0
   heyProcess.stdout.on('data', (data) => {
-    output += data
+    // Check output for keywords that indicate we didn't get CSV response
+    // The hey command isn't great at error checking, can't rely on exit code 
+    
+    let dataString = data.toString();
+    //console.log("==== "+dataString.length+" "+dataBlock);
+    if(dataString.includes('Summary:') || dataString.includes('Options:') || (dataBlock == 0 && dataString.length < 100)) {
+      badData = true;
+      return;
+    } else {
+      output += dataString
+    }
+    dataBlock++
   });
   
   heyProcess.stderr.on('data', (data) => {
-    console.error(`### Hey error: ${data}`);
+    console.error(`### Hey error! ${data}`);
     heyProcess = null
   });
 
-  heyProcess.on('close', (code) => {
-    console.log(`### Hey completed: ${code}`);
+  heyProcess.on('error', (code) => {
+    console.log(`### Hey exited with error: ${code}`);
+    heyExitCode = code
     heyProcess = null
+  });
+
+  heyProcess.on('exit', (code) => {
+    console.log(`### Hey completed: ${code} badData: ${badData}`);
+    heyProcess = null
+    if(badData) {
+      heyExitCode = 70;
+      return;
+    }
+    heyExitCode = code
+    if(code === 0 && output.length > 0) fs.writeFileSync(`${dataDir}/${urlParsed.hostname} ${date}.csv`, output)
   });
 
   res.send({msg:'Started'});
 });
 
-// API for getting process
+// API for getting process status
 app.get('/api/run', function (req, res) {
-  if(heyProcess)
-    res.send({pid: heyProcess.pid});
-  else
-    res.send({pid: null});
+  if(!heyProcess) { res.send({running: false, code: heyExitCode}); return; }
+  if(heyProcess) { res.send({running: true, code: heyExitCode}); return; }
 })
 
 // Start the Express server
 var port = process.env.PORT || 3000;
 var server = app.listen(port, function () {
   var port = server.address().port;
-  console.log(`### Server listening on ${server.address().port}`);
+  console.log(`### Server is listening on ${server.address().port}`);
 });
