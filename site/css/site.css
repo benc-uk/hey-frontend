@@ -78,3 +78,7 @@ button:disabled {
 #gen-section {
   display: none;
 }
+
+a, a:visited {
+  color: rgb(138, 156, 168)
+}

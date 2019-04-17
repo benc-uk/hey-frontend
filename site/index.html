@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Hey Charts</title>
+  <title>Hey Frontend</title>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
   <script src="https://unpkg.com/papaparse@4.6.3/papaparse.min.js"></script>
@@ -40,6 +40,8 @@
       <h3 style="width:7pc">Parameters:</h3> <input type="text" id="gen-params" style="flex: 1">
     </div>
     <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
+    <span><h3 class="inline"> &nbsp; <a target="_blank" href="https://github.com/rakyll/hey#usage">Refer to the 'hey' docs for parameter details</a> <i class="fas fa-external-link-alt"></i></h3></span>
+      <div style="float:right">v0.0.2</div>
   </div>
 
   <div id="report">
@@ -63,7 +65,7 @@
     <canvas id="resp-hist" height="120"></canvas>
   </div>
 
+
   <script src="js/report.js"></script>
-  <div id="toast"><div id="img">Icon</div><div id="desc">A notification message..</div></div>
 </body>
 </html>

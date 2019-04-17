@@ -69,17 +69,18 @@ app.post('/api/run', function (req, res) {
 
   var dataBlock = 0
   heyProcess.stdout.on('data', (data) => {
-    // Check output for keywords that indicate we didn't get CSV response
-    // The hey command isn't great at error checking, can't rely on exit code 
     
     let dataString = data.toString();
-    //console.log("==== "+dataString.length+" "+dataBlock);
-    if(dataString.includes('Summary:') || dataString.includes('Options:') || (dataBlock == 0 && dataString.length < 100)) {
-      badData = true;
-      return;
-    } else {
-      output += dataString
+    if(dataBlock == 0) {
+      // Check output for keywords that indicate we didn't get CSV response
+      // The hey command isn't great at error checking, can't rely on exit code 
+      if(dataString.includes('Summary:') || dataString.includes('Options:') || dataString.length < 100) {
+        badData = true;
+        return;
+      }
     }
+
+    output += dataString
     dataBlock++
   });
   

@@ -1,6 +1,6 @@
 {
   "name": "hey-charts",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "",
   "main": "server.js",
   "scripts": {
@@ -8,11 +8,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benc-uk/hey-charts.git"
+    "url": "git+https://github.com/benc-uk/hey-frontend.git"
   },
   "author": "Ben Coleman",
   "license": "MIT",
-  "homepage": "https://github.com/benc-uk/hey-charts#readme",
+  "homepage": "https://github.com/benc-uk/hey-frontend#readme",
   "dependencies": {
     "dotenv": "^7.0.0",
     "express": "^4.16.4"
