@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Serve the site
 const dataDir = require('path').resolve(DATA_DIR)
-if (!fs.existsSync(dataDir)){
+if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
 const siteDir = require('path').resolve(SITE_DIR)
@@ -117,7 +117,7 @@ app.get('/api/run', function (req, res) {
 
 // Start the Express server
 var port = process.env.PORT || 3000;
-var server = app.listen(port, function () {
-  var port = server.address().port;
-  console.log(`### Server is listening on ${server.address().port}`);
+console.log(`### App version ${require('./package.json').version} is starting...`);
+var server = app.listen(port, function () {  
+  console.log(`### Server is listening on port ${server.address().port}`);
 });

@@ -32,16 +32,15 @@
   <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="50" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
     
   <div id="gen-section">
-    <h1>Run 'hey'</h1>
-    <div style="display:flex; align-items: center; ">
-      <h3 style="width:7pc">URL:</h3> <input type="text" id="gen-url" style="flex: 1">
+    <div>
+      <h3>URL:</h3> <input type="text" id="gen-url">
     </div>
-    <div style="display:flex; align-items: center; ">
-      <h3 style="width:7pc">Parameters:</h3> <input type="text" id="gen-params" style="flex: 1">
+    <div>
+      <h3>Parameters:</h3> <input type="text" id="gen-params">
     </div>
     <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
     <span><h3 class="inline"> &nbsp; <a target="_blank" href="https://github.com/rakyll/hey#usage">Refer to the 'hey' docs for parameter details</a> <i class="fas fa-external-link-alt"></i></h3></span>
-      <div style="float:right">v0.0.2</div>
+    <p>v0.0.3</p>
   </div>
 
   <div id="report">
@@ -55,16 +54,19 @@
         <tr><td class="label">Average Resp: &nbsp; </td><td id="avg" class="num"></td></tr>
       </table>
 
-      <canvas id="timing-chart" height="160" width="300" style="justify-self: center;"></canvas>
+      <canvas id="timing-chart" height="120" width="300" style="justify-self: center;"></canvas>
     </div>
 
     <h1>Response Times over Time</h1>
-    <canvas id="resp-chart" height="120"></canvas>
+    <div class="chart-container" style="position: relative; height:32vh; width:90vw; margin: auto">    
+      <canvas id="resp-chart" height="120"></canvas>
+    </div>
 
     <h1>Response Times Histogram</h1>
-    <canvas id="resp-hist" height="120"></canvas>
+    <div class="chart-container" style="position: relative; height:32vh; width:90vw; margin: auto"> 
+      <canvas id="resp-hist" height="120"></canvas>
+    </div>
   </div>
-
 
   <script src="js/report.js"></script>
 </body>

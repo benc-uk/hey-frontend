@@ -43,6 +43,7 @@ var histChartCfg = {
 
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     legend: {
       display: false
     },
@@ -63,7 +64,7 @@ var histChartCfg = {
         }
       }]
     },
-    layout: { padding: {top: 20} } 
+    layout: { padding: { top: 20 } } 
   }
 }
 
@@ -84,6 +85,7 @@ var respChartCfg = {
 
   options: {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       xAxes: [{
         gridLines: { color: '#777' },
