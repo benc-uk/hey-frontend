@@ -41,6 +41,7 @@ function runGenerate() {
     document.querySelector('#gen-section').style.display = 'none';
     checker = setInterval(checkStatus, 2000)
     document.querySelector('#generate').disabled = true;
+    document.querySelector('#upload').disabled = true; document.querySelector('#upload-label').className = 'file-upload-disabled';
     document.querySelector('#generate').innerHTML = '<i class="fas fa-running"></i> Running...'
   })
   .catch(async err => {
@@ -70,6 +71,7 @@ function checkStatus() {
 
     if(!data.running) {
       document.querySelector('#generate').disabled = false;
+      document.querySelector('#upload').disabled = false; document.querySelector('#upload-label').className = 'file-upload';
       document.querySelector('#generate').innerHTML = '<i class="fas fa-chart-line"></i> Generate'
       if(data.code === 0) {
         if(checker) {
@@ -91,6 +93,7 @@ function checkStatus() {
     } else { //if(data.status == 'Running') {
       if(!checker) checker = setInterval(checkStatus, 2000)
       document.querySelector('#generate').disabled = true;
+      document.querySelector('#upload').disabled = true; document.querySelector('#upload-label').className = 'file-upload-disabled';
       document.querySelector('#generate').innerHTML = '<i class="fas fa-running"></i> Running...'      
     }
   })

@@ -29,6 +29,12 @@
       <option value="" disabled selected="selected"> -- Select File -- </option>
     </select>
   </div>
+  <div class="inline"> 
+    <form ref='uploadForm' id='uploadForm' action='/api/upload' method='post' encType="multipart/form-data" class="inline"> 
+      <label id="upload-label" for="upload" class="file-upload-disabled"><i class="fas fa-file-upload"></i> Upload</label>
+      <input id="upload" name="upload" type="file" style="display: none;" onchange="this.form.submit()"/>
+    </form> 
+  </div>
   <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="50" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
     
   <div id="gen-section">
