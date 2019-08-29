@@ -1,0 +1,16 @@
+apiVersion : apps/v1beta1
+kind: Deployment
+metadata:
+  name: bencukheyfrontend 
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bencukheyfrontend 
+    spec:
+      containers:
+        - name: bencukheyfrontend 
+          image: bcdemo.azurecr.io/bencukheyfrontend 
+          ports:
+          - containerPort: 3000
