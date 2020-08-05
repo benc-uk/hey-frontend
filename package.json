@@ -16,7 +16,7 @@
   "dependencies": {
     "dotenv": "^7.0.0",
     "express": "^4.16.4",
-    "express-fileupload": "^1.1.5",
+    "express-fileupload": "^1.1.9",
     "unzipper": "^0.10.3"
   }
 }
