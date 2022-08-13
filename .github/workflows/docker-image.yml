@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+env:
+  IMAGE_REG: ghcr.io
+  IMAGE_NAME: benc-uk/hey-frontend
+  IMAGE_TAG: latest
+  
+jobs:
+  build:
+    env: 
+      IMAGE: ${{ env.IMAGE_REG }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $IMAGE
+      
+    # Only when pushing to default branch (e.g. master or main), then push image to registry
+    - name: Push to container registry
+      if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+      run: |
+        echo ${{ secrets.GITHUB_TOKEN }} | docker login $IMAGE_REG -u $GITHUB_ACTOR --password-stdin
+        docker push $IMAGE
