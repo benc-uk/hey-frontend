@@ -1,4 +1,4 @@
-FROM node:10-jessie
+FROM node:18-buster-slim
 ENV NODE_ENV production
 WORKDIR /app 
 
