@@ -10,11 +10,14 @@ env:
   IMAGE_REG: ghcr.io
   IMAGE_NAME: benc-uk/hey-frontend
   IMAGE_TAG: latest
-  
+
+permissions:
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3

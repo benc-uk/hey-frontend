@@ -1,7 +1,7 @@
 body {
   background-color: rgb(28, 33, 37);
   font-family: 'Nunito', sans-serif;
-  color: rgb(138, 156, 168)
+  color: rgb(138, 156, 168);
 }
 
 table {
@@ -13,11 +13,12 @@ table {
 }
 
 .label {
-  color: rgb(85, 137, 158)
+  color: rgb(85, 137, 158);
 }
 
-#resp-chart, #resp-hist {
-  background-color: rgb(20, 20, 20)
+#resp-chart,
+#resp-hist {
+  background-color: rgb(20, 20, 20);
 }
 
 h1 {
@@ -30,46 +31,50 @@ h1 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-template-areas: ". .";
+  grid-template-areas: '. .';
   align-items: center;
 }
 
-input[type=text], select {
-  font-size: 90%; 
-  padding: 5px; margin: 10px; 
+input[type='text'],
+select {
+  font-size: 90%;
+  padding: 5px;
+  margin: 10px;
   background-color: rgb(20, 20, 20);
-  color: #aaa; 
-  border: 2px solid rgb(85, 137, 158)
+  color: #aaa;
+  border: 2px solid rgb(85, 137, 158);
 }
 
-input, output {
-  display: inline-block; 
+input,
+output {
+  display: inline-block;
   vertical-align: middle;
 }
 
 #thinInput {
-  width: 100px
+  width: 100px;
 }
 
 button {
   font-family: 'Nunito', sans-serif;
   cursor: pointer;
-  font-size: 110%; 
+  font-size: 110%;
   padding: 7px;
   background-color: rgb(62, 173, 40);
-  color: rgb(223, 223, 223); 
-  border: 2px solid rgb(18, 104, 18)
+  color: rgb(223, 223, 223);
+  border: 2px solid rgb(18, 104, 18);
 }
 
-button:disabled, .disabled {
+button:disabled,
+.disabled {
   background-color: rgb(189, 74, 74);
   color: rgb(46, 6, 6);
   border: 2px solid rgb(56, 12, 10);
-  cursor: not-allowed
+  cursor: not-allowed;
 }
 
 .inline {
-  display: inline
+  display: inline;
 }
 
 #report {
@@ -80,39 +85,40 @@ button:disabled, .disabled {
   display: none;
 }
 #gen-section > div {
-  display:flex; 
+  display: flex;
   align-items: center;
 }
 #gen-section h3 {
   width: 6.5rem;
 }
 #gen-section input {
-  flex: 1
+  flex: 1;
 }
 #gen-section p {
   float: right;
 }
 
-a, a:visited {
-  color: rgb(138, 156, 168)
+a,
+a:visited {
+  color: rgb(138, 156, 168);
 }
 
 .file-upload {
   display: inline;
   cursor: pointer;
-  font-size: 110%  !important;; 
+  font-size: 110% !important;
   padding: 7px !important;
   background-color: rgb(62, 173, 40);
-  color: rgb(223, 223, 223); 
-  border: 2px solid rgb(18, 104, 18)
+  color: rgb(223, 223, 223);
+  border: 2px solid rgb(18, 104, 18);
 }
 
 .file-upload-disabled {
   display: inline;
-  font-size: 110%  !important;; 
+  font-size: 110% !important;
   padding: 7px !important;
   background-color: rgb(189, 74, 74);
   color: rgb(46, 6, 6);
   border: 2px solid rgb(56, 12, 10);
-  cursor: not-allowed
+  cursor: not-allowed;
 }

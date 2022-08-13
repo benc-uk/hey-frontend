@@ -1,79 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Hey Frontend</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hey Frontend</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-  <script src="https://unpkg.com/papaparse@4.6.3/papaparse.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <script src="https://unpkg.com/papaparse@5.3.2/papaparse.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
 
-  <link rel="stylesheet" href="css/site.css">
-  <script src="js/generator.js"></script>
-  
-  <link rel="shortcut icon" href="img/icon.png" type="image/png">
-</head>
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="js/generator.js"></script>
 
-<body onload="refreshFiles(); checkStatus();">
+    <link rel="shortcut icon" href="img/icon.png" type="image/png" />
+  </head>
 
-  <div class="inline"> <button id="generate" onclick="clickGenerate()" disabled><i class="fas fa-chart-line"></i> Generator</button> </div>
-  <div class="inline">
-    <select id="csvSelect" onChange="refresh()">
-      <option value="" disabled selected="selected"> -- Select File -- </option>
-    </select>
-  </div>
-  <div class="inline"> 
-    <form ref='uploadForm' id='uploadForm' action='/api/upload' method='post' encType="multipart/form-data" class="inline"> 
-      <label id="upload-label" for="upload" class="file-upload-disabled"><i class="fas fa-file-upload"></i> Upload</label>
-      <input id="upload" name="upload" type="file" style="display: none;" onchange="this.form.submit()"/>
-    </form> 
-  </div>
-  <div class="inline">Thinning: <input type="range" id="thinInput" min="1" max="50" onChange="refresh()" value="2"> <output id="thinResult">2</output> </div>
-    
-  <div id="gen-section">
-    <div>
-      <h3>URL:</h3> <input type="text" id="gen-url">
+  <body onload="refreshFiles(); checkStatus();">
+    <div class="inline">
+      <button id="generate" onclick="clickGenerate()" disabled><i class="fas fa-chart-line"></i> Generator</button>
     </div>
-    <div>
-      <h3>Parameters:</h3> <input type="text" id="gen-params">
+    <div class="inline">
+      <select id="csvSelect" onChange="refresh()">
+        <option value="" disabled selected="selected">-- Select File --</option>
+      </select>
     </div>
-    <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
-    <span><h3 class="inline"> &nbsp; <a target="_blank" href="https://github.com/rakyll/hey#usage">Refer to the 'hey' docs for parameter details</a> <i class="fas fa-external-link-alt"></i></h3></span>
-    <p>v0.0.3</p>
-  </div>
-
-  <div id="report">
-    <h1>Summary</h1>
-    <div class="grid-container">
-      <table class="resultsTable">
-        <tr><td class="label">Total: &nbsp; </td><td id="total" class="num"></td></tr>
-        <tr><td class="label">Rate: &nbsp; </td><td id="rate" class="num"></td></tr>
-        <tr><td class="label">Slowest Resp: &nbsp; </td><td id="slowest" class="num"></td></tr>
-        <tr><td class="label">Fastest Resp: &nbsp; </td><td id="fastest" class="num"></td></tr>
-        <tr><td class="label">Average Resp: &nbsp; </td><td id="avg" class="num"></td></tr>
-      </table>
-
-      <canvas id="timing-chart" height="120" width="300" style="justify-self: center;"></canvas>
+    <div class="inline">
+      <form
+        ref="uploadForm"
+        id="uploadForm"
+        action="/api/upload"
+        method="post"
+        enctype="multipart/form-data"
+        class="inline">
+        <label id="upload-label" for="upload" class="file-upload-disabled"
+          ><i class="fas fa-file-upload"></i> Upload</label
+        >
+        <input id="upload" name="upload" type="file" style="display: none" onchange="this.form.submit()" />
+      </form>
+    </div>
+    <div class="inline">
+      Thinning:
+      <input type="range" id="thinInput" min="1" max="50" onChange="refresh()" value="2" />
+      <output id="thinResult">2</output>
     </div>
 
-    <h1>Response Times over Time</h1>
-    <div class="chart-container" style="position: relative; height:32vh; width:90vw; margin: auto">    
-      <canvas id="resp-chart" height="120"></canvas>
+    <div id="gen-section">
+      <div>
+        <h3>URL:</h3>
+        <input type="text" id="gen-url" />
+      </div>
+      <div>
+        <h3>Parameters:</h3>
+        <input type="text" id="gen-params" />
+      </div>
+      <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
+      <span
+        ><h3 class="inline">
+          &nbsp;
+          <a target="_blank" href="https://github.com/rakyll/hey#usage"
+            >Refer to the 'hey' docs for parameter details</a
+          >
+          <i class="fas fa-external-link-alt"></i></h3
+      ></span>
+      <p>v0.0.3</p>
     </div>
 
-    <h1>Response Times Histogram</h1>
-    <div class="chart-container" style="position: relative; height:32vh; width:90vw; margin: auto"> 
-      <canvas id="resp-hist" height="120"></canvas>
-    </div>
-  </div>
+    <div id="report">
+      <h1>Summary</h1>
+      <div class="grid-container">
+        <table class="resultsTable">
+          <tr>
+            <td class="label">Total: &nbsp;</td>
+            <td id="total" class="num"></td>
+          </tr>
+          <tr>
+            <td class="label">Rate: &nbsp;</td>
+            <td id="rate" class="num"></td>
+          </tr>
+          <tr>
+            <td class="label">Slowest Resp: &nbsp;</td>
+            <td id="slowest" class="num"></td>
+          </tr>
+          <tr>
+            <td class="label">Fastest Resp: &nbsp;</td>
+            <td id="fastest" class="num"></td>
+          </tr>
+          <tr>
+            <td class="label">Average Resp: &nbsp;</td>
+            <td id="avg" class="num"></td>
+          </tr>
+        </table>
 
-  <script src="js/report.js"></script>
-</body>
+        <canvas id="timing-chart" height="120" width="300" style="justify-self: center"></canvas>
+      </div>
+
+      <h1>Response Times over Time</h1>
+      <div class="chart-container" style="position: relative; height: 32vh; width: 90vw; margin: auto">
+        <canvas id="resp-chart" height="120"></canvas>
+      </div>
+
+      <h1>Response Times Histogram</h1>
+      <div class="chart-container" style="position: relative; height: 32vh; width: 90vw; margin: auto">
+        <canvas id="resp-hist" height="120"></canvas>
+      </div>
+    </div>
+
+    <script src="js/report.js"></script>
+  </body>
 </html>
