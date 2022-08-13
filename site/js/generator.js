@@ -39,7 +39,7 @@ function runGenerate() {
       Toastify({
         text: 'Load generation started!',
         duration: 3000,
-        backgroundColor: '#2969aa',
+        style: { background: '#2969aa' },
       }).showToast()
       document.querySelector('#gen-section').style.display = 'none'
       checker = setInterval(checkStatus, 2000)
@@ -54,7 +54,7 @@ function runGenerate() {
         Toastify({
           text: j.msg,
           duration: 3000,
-          backgroundColor: '#d67d3e',
+          style: { background: '#d67d3e' },
         }).showToast()
       } else {
         alert(err)
@@ -84,14 +84,14 @@ function checkStatus() {
             Toastify({
               text: 'Job completed!',
               duration: 3000,
-              backgroundColor: '#2969aa',
+              style: { background: '#2969aa' },
             }).showToast()
           }
         } else if (data.code > 0) {
           Toastify({
             text: 'Load generation failed! Probably due to incorrect parameters',
             duration: 3000,
-            backgroundColor: '#d67d3e',
+            style: { background: '#d67d3e' },
           }).showToast()
         }
         clearInterval(checker)

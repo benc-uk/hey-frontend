@@ -60,9 +60,9 @@ button {
   cursor: pointer;
   font-size: 110%;
   padding: 7px;
-  background-color: rgb(62, 173, 40);
+  background-color: rgb(53, 148, 34);
   color: rgb(223, 223, 223);
-  border: 2px solid rgb(18, 104, 18);
+  border: 2px solid rgb(9, 66, 9);
 }
 
 button:disabled,
@@ -108,9 +108,9 @@ a:visited {
   cursor: pointer;
   font-size: 110% !important;
   padding: 7px !important;
-  background-color: rgb(62, 173, 40);
+  background-color: rgb(53, 148, 34);
   color: rgb(223, 223, 223);
-  border: 2px solid rgb(18, 104, 18);
+  border: 2px solid rgb(9, 66, 9);
 }
 
 .file-upload-disabled {

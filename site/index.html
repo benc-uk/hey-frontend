@@ -23,7 +23,9 @@
 
   <body onload="refreshFiles(); checkStatus();">
     <div class="inline">
-      <button id="generate" onclick="clickGenerate()" disabled><i class="fas fa-chart-line"></i> Generator</button>
+      <button id="generate" onclick="clickGenerate()" disabled>
+        <i class="fas fa-chart-line fa-fw"></i> Generator
+      </button>
     </div>
     <div class="inline">
       <select id="csvSelect" onChange="refresh()">
@@ -38,9 +40,9 @@
         method="post"
         enctype="multipart/form-data"
         class="inline">
-        <label id="upload-label" for="upload" class="file-upload-disabled"
-          ><i class="fas fa-file-upload"></i> Upload</label
-        >
+        <label id="upload-label" for="upload" class="file-upload-disabled">
+          <i class="fas fa-file-upload fa-fw"></i> Upload
+        </label>
         <input id="upload" name="upload" type="file" style="display: none" onchange="this.form.submit()" />
       </form>
     </div>
@@ -59,15 +61,16 @@
         <h3>Parameters:</h3>
         <input type="text" id="gen-params" />
       </div>
-      <button onclick="runGenerate()"><i class="fas fa-play"></i> Generate Load!</button>
-      <span
-        ><h3 class="inline">
+      <button onclick="runGenerate()"><i class="fas fa-play fa-fw"></i> Generate Load!</button>
+      <span>
+        <h3 class="inline">
           &nbsp;
-          <a target="_blank" href="https://github.com/rakyll/hey#usage"
-            >Refer to the 'hey' docs for parameter details</a
-          >
-          <i class="fas fa-external-link-alt"></i></h3
-      ></span>
+          <a target="_blank" href="https://github.com/rakyll/hey#usage">
+            Refer to the 'hey' docs for parameter details
+          </a>
+          <i class="fas fa-external-link-alt fa-fw"></i>
+        </h3>
+      </span>
       <p>v0.0.3</p>
     </div>
 
